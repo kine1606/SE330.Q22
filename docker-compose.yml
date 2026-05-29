@@ -13,17 +13,17 @@ services:
 #    volumes:
 #      - user_postgres_data:/var/lib/postgresql/data
 
-  product-postgres:
-    image: postgres:16
-    container_name: product-postgres
-    environment:
-      POSTGRES_USER: product_service
-      POSTGRES_PASSWORD: product_password
-      POSTGRES_DB: product_service_db
-    ports:
-      - "5434:5432"
-    volumes:
-      - product_postgres_data:/var/lib/postgresql/data
+#  product-postgres:
+#    image: postgres:16
+#    container_name: product-postgres
+#    environment:
+#      POSTGRES_USER: product_service
+#      POSTGRES_PASSWORD: product_password
+#      POSTGRES_DB: product_service_db
+#    ports:
+#      - "5434:5432"
+#    volumes:
+#      - product_postgres_data:/var/lib/postgresql/data
 
 #  order-postgres:
 #    image: postgres:16
@@ -63,7 +63,7 @@ services:
 
 volumes:
 #  user_postgres_data:
-  product_postgres_data:
+#  product_postgres_data:
 #  order_postgres_data:
 #  payment_postgres_data:
   inventory_postgres_data:

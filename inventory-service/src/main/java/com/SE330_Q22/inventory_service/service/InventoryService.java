@@ -32,7 +32,7 @@ public class InventoryService
     {
         if(quantity == null || quantity <= 0)
         {
-            throw new RuntimeException("Quantity must be greater than 0");
+            throw new IllegalArgumentException("Quantity must be greater than 0");
         }
     }
     private boolean isNotEnough(Integer quantity, Integer targetQuantity)
@@ -109,6 +109,8 @@ public class InventoryService
         InventoryItem item = getItemBySkuCode(skuCode);
         if (isNotEnough(item.getQuantityReserved(), quantity))
         {
+            log.info("Not enough stock for skuCode: {}. Requested: {}, Sold: {}",
+                    item.getSkuCode(), item.getQuantityReserved(), quantity);
             throw new RuntimeException("Not enough reserved items to sold");
         }
 
@@ -131,6 +133,8 @@ public class InventoryService
         InventoryItem item = getItemBySkuCode(skuCode);
         if (isNotEnough(item.getQuantityReserved(), quantity))
         {
+            log.info("Not enough stock for skuCode: {}. Requested: {}, released: {}",
+                    item.getSkuCode(), item.getQuantityAvailable(), quantity);
             throw new RuntimeException("Not enough reserved items to release");
         }
 
