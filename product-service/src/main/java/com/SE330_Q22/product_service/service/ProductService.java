@@ -49,6 +49,12 @@ public class ProductService
         return productMapper.toResponse(product);
     }
 
+    public ProductResponse getBySkuCode(String skuCode) {
+        Product product = productRepository.findBySkuCode(skuCode)
+                .orElseThrow(() -> new RuntimeException("Product not found with skuCode: " + skuCode));
+        return productMapper.toResponse(product);
+    }
+
     @Transactional
     public ProductResponse update(Long id, UpdateProductRequest request)
     {

@@ -35,9 +35,16 @@ public class ProductController
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductResponse getProduct(@PathVariable Long id)
+    public ProductResponse getProductById(@PathVariable Long id)
     {
         return productService.getById(id);
+    }
+
+    @GetMapping("/sku/{skuCode}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductResponse getProductBySkuCode(@PathVariable String skuCode)
+    {
+        return productService.getBySkuCode(skuCode);
     }
 
     @PatchMapping("/{id}")
