@@ -17,7 +17,7 @@ public class InventoryResponse
     private Integer quantityAvailable;
     private Integer quantityReserved;
     private Integer quantitySold;
-//    private String status;
+//    private ItemStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

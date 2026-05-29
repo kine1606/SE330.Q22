@@ -52,6 +52,7 @@ public class InventoryService
         inventoryItem.setUpdatedAt(LocalDateTime.now());
         inventoryItem.setQuantityReserved(0);
         inventoryItem.setQuantitySold(0);
+
         inventoryRepository.save(inventoryItem);
         log.info("Inventory item {} is created",  inventoryItem.getId());
     }
@@ -143,7 +144,7 @@ public class InventoryService
     }
 
     //PATCH /api/inventory/{skuCode}/add?quantity=?
-    public InventoryResponse addStock(String skuCode, Integer quantity)
+    public InventoryResponse restock(String skuCode, Integer quantity)
     {
         InventoryItem item = getItemBySkuCode(skuCode);
         validateQuantity(quantity);

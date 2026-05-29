@@ -16,7 +16,4 @@ public class InventoryItemRequest
 //    @NotBlank(message = "SKU code is required")
     private String skuCode;
     private Integer quantityAvailable;
-
-//    private Integer quantityReserved;
-//    private Integer quantitySold;
 }

@@ -1,5 +1,6 @@
 package com.SE330_Q22.inventory_service.entity;
 
+import com.SE330_Q22.inventory_service.dto.ItemStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,7 +36,7 @@ public class InventoryItem
     //    @Column(name = "quantity_sold", nullable = false)
     private Integer quantitySold;
 
-//    private String status;
+//    private ItemStatus status;
 //    @CreatedDate
 //    @Column(name = "create_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
