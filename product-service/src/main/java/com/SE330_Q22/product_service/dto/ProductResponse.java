@@ -11,10 +11,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 //@JsonPropertyOrder({
 //        "id",
 //        "skuCode",
@@ -25,6 +21,11 @@ import java.time.LocalDateTime;
 //        "createdAt",
 //        "updatedAt",
 //})
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class ProductResponse
 {
     private Long id;

@@ -82,7 +82,7 @@ public class InventoryService
     @Transactional
     public InventoryResponse reserveStock(String skuCode, Integer quantity)
     {
-        validateQuantity(quantity);;
+        validateQuantity(quantity);
         InventoryItem item = getItemBySkuCode(skuCode);
         if (isNotEnough(item.getQuantityAvailable(), quantity))
         {
