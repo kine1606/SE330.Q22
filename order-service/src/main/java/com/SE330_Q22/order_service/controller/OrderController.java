@@ -36,4 +36,10 @@ public class OrderController
     {
         return orderService.createOrder(orderRequest);
     }
+
+    @PatchMapping("/{id}/order-failed")
+    public OrderResponse markOrderFail(@PathVariable Long id) throws Exception
+    {
+        return orderService.markOrderFail(id);
+    }
 }
