@@ -49,17 +49,17 @@ services:
     volumes:
       - inventory_postgres_data:/var/lib/postgresql/data
 
-#  payment-postgres:
-#    image: postgres:16
-#    container_name: payment-postgres
-#    environment:
-#      POSTGRES_USER: payment_service
-#      POSTGRES_PASSWORD: payment_password
-#      POSTGRES_DB: payment_service_db
-#    ports:
-#      - "5437:5432"
-#    volumes:
-#      - payment_postgres_data:/var/lib/postgresql/data
+  payment-postgres:
+    image: postgres:16
+    container_name: payment-postgres
+    environment:
+      POSTGRES_USER: payment_service
+      POSTGRES_PASSWORD: payment_password
+      POSTGRES_DB: payment_service_db
+    ports:
+      - "5437:5432"
+    volumes:
+      - payment_postgres_data:/var/lib/postgresql/data
 #
 
 
@@ -68,5 +68,5 @@ volumes:
   product_postgres_data:
   order_postgres_data:
   inventory_postgres_data:
-#  payment_postgres_data:
+  payment_postgres_data:
 
