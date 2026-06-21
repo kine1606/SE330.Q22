@@ -1,23 +1,29 @@
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        - id: product-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/api/product/**
-            
-        - id: order-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/order/**
-            
-        - id: inventory-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/inventory/**
+      server:
+        webflux:
+          routes:
+            - id: product-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/product/**
+                
+            - id: order-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/order/**
+                
+            - id: inventory-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/inventory/**
