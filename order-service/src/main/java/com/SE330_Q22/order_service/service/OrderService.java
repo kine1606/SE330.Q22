@@ -36,7 +36,7 @@ public class OrderService
 
 
     //POST /api/order
-    public OrderResponse createOrder(OrderRequest orderRequest)
+    public OrderResponse createOrder(OrderRequest orderRequest, Long userId)
     {
         List<OrderLineItem> lineItems = new ArrayList<>();
         List<OrderLineItemRequest> reservedItems = new ArrayList<>();
@@ -62,7 +62,7 @@ public class OrderService
 
             Order order = Order.builder()
                     .orderNumber(generateOrderNumber())
-//                    .userId(request.getUserId())
+                    .userId(userId)
                     .status("PENDING")
                     .totalAmount(totalAmount)
                     .items(lineItems)
@@ -152,9 +152,9 @@ public class OrderService
     }
 
     //GET api/order/user/{userId}
-//    public List<OrderResponse> getOrdersByUserId(UUID userId) {
-//        return orderMapper.toResponseList(orderRepository.findByUserId);
-//    }
+    public List<OrderResponse> getOrdersByUserId(Long userId) {
+        return orderMapper.toResponseList(orderRepository.findByUserId(userId));
+    }
 
     private OrderLineItem CreateLineItem(ProductResponse productResponse,
                                               OrderLineItemRequest itemRequest)
