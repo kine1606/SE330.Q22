@@ -20,15 +20,18 @@ public class RouteConfig {
         return builder.routes()
                 .route("user-service", r -> r.path("/api/user/**")
                         .uri("http://localhost:8084"))
-                .route("product-service", r -> r.path("/api/product/**")
+                .route("product-service", r -> r.path("/api/products/**")
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationGatewayFilterFactory.Config())))
                         .uri("http://localhost:8081"))
-                .route("order-service", r -> r.path("/api/order/**")
+                .route("order-service", r -> r.path("/api/orders/**")
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationGatewayFilterFactory.Config())))
                         .uri("http://localhost:8082"))
                 .route("inventory-service", r -> r.path("/api/inventory/**")
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationGatewayFilterFactory.Config())))
                         .uri("http://localhost:8083"))
+                .route("inventory-service", r -> r.path("/api/payments/**")
+                        .filters(f -> f.filter(authFilter.apply(new AuthenticationGatewayFilterFactory.Config())))
+                        .uri("http://localhost:8085"))
                 .build();
     }
 }
