@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import ProductCard from '../components/ProductCard';
 
 const HomePage = () => {
@@ -8,6 +9,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { token } = useAuth();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,20 +31,9 @@ const HomePage = () => {
     }
   }, [token]);
 
-  const handleAddToCart = async (product) => {
-    try {
-      await axios.post('http://localhost:8080/api/order', {
-        items: [
-          { skuCode: product.skuCode, quantity: 1, price: product.price }
-        ]
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      alert(`Đặt hàng thành công ${product.name}!`);
-    } catch(e) {
-      alert('Đặt hàng thất bại. Xem console log.');
-      console.error(e);
-    }
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    alert(`Đã thêm ${product.name} vào giỏ hàng!`);
   };
 
   return (
