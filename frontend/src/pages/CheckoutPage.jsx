@@ -12,6 +12,7 @@ const CheckoutPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('MOMO');
 
   if (cartItems.length === 0) {
     return (
@@ -48,22 +49,28 @@ const CheckoutPage = () => {
         throw new Error('Không tìm thấy mã đơn hàng từ hệ thống.');
       }
 
-      // BƯỚC 3: Gọi API thanh toán MoMo (Payment Service qua Gateway)
-      const paymentResponse = await axios.post('http://localhost:8080/api/payments', {
-        orderId: orderId,
-        paymentMethod: "MOMO"
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      if (paymentMethod === 'MOMO') {
+        // BƯỚC 3: Gọi API thanh toán MoMo (Payment Service qua Gateway)
+        const paymentResponse = await axios.post('http://localhost:8080/api/payments', {
+          orderId: orderId,
+          paymentMethod: "MOMO"
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-      // BƯỚC 4: Lấy payUrl và điều hướng người dùng sang cổng MoMo để quét QR
-      const payUrl = paymentResponse.data.payUrl;
+        // BƯỚC 4: Lấy payUrl và điều hướng người dùng sang cổng MoMo để quét QR
+        const payUrl = paymentResponse.data.payUrl;
 
-      if (payUrl) {
-        clearCart(); // Xóa giỏ hàng trước khi chuyển đi
-        window.location.href = payUrl; // Điều hướng trực tiếp sang trang hiển thị QR của MoMo
+        if (payUrl) {
+          clearCart(); // Xóa giỏ hàng trước khi chuyển đi
+          window.location.href = payUrl; // Điều hướng trực tiếp sang trang hiển thị QR của MoMo
+        } else {
+          throw new Error('Không nhận được link thanh toán từ MoMo.');
+        }
       } else {
-        throw new Error('Không nhận được link thanh toán từ MoMo.');
+        // BƯỚC 3 (COD): Không gọi API thanh toán MoMo, chuyển thẳng tới trang thành công
+        clearCart();
+        navigate('/order-success');
       }
 
     } catch (err) {
@@ -105,6 +112,20 @@ const CheckoutPage = () => {
             <span style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--accent-primary)' }}>{getCartTotal().toLocaleString('vi-VN')} VNĐ</span>
           </div>
 
+          <div style={{ marginBottom: '2rem' }}>
+            <h4 style={{ fontWeight: '600', marginBottom: '1rem' }}>Phương thức thanh toán</h4>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '1rem', border: `2px solid ${paymentMethod === 'MOMO' ? 'var(--accent-primary)' : 'var(--border)'}`, borderRadius: '0.5rem', flex: 1 }}>
+                <input type="radio" name="paymentMethod" value="MOMO" checked={paymentMethod === 'MOMO'} onChange={() => setPaymentMethod('MOMO')} style={{ cursor: 'pointer', width: '1.2rem', height: '1.2rem' }} />
+                <span style={{ fontWeight: paymentMethod === 'MOMO' ? '600' : '400' }}>Thanh toán qua Ví MoMo</span>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '1rem', border: `2px solid ${paymentMethod === 'CASH' ? 'var(--accent-primary)' : 'var(--border)'}`, borderRadius: '0.5rem', flex: 1 }}>
+                <input type="radio" name="paymentMethod" value="CASH" checked={paymentMethod === 'CASH'} onChange={() => setPaymentMethod('CASH')} style={{ cursor: 'pointer', width: '1.2rem', height: '1.2rem' }} />
+                <span style={{ fontWeight: paymentMethod === 'CASH' ? '600' : '400' }}>Thanh toán khi nhận hàng (COD)</span>
+              </label>
+            </div>
+          </div>
+
           <div style={{ display: 'flex', gap: '1rem' }}>
             <Link to="/cart" className="btn btn-outline" style={{ flex: 1, textAlign: 'center' }}>Quay lại giỏ hàng</Link>
             <button
@@ -113,7 +134,7 @@ const CheckoutPage = () => {
                 style={{ flex: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
                 disabled={loading}
             >
-              {loading ? 'Đang xử lý thanh toán MoMo...' : (
+              {loading ? 'Đang xử lý...' : (
                   <>
                     <CheckCircle size={20} /> Xác nhận đặt hàng
                   </>

@@ -1,5 +1,4 @@
 com\SE330_Q22\api_gateway\RouteConfig.class
-com\SE330_Q22\api_gateway\TestController.class
 com\SE330_Q22\api_gateway\filter\RouteValidator.class
 com\SE330_Q22\api_gateway\ApiGatewayApplication.class
 com\SE330_Q22\api_gateway\CorsConfig.class
