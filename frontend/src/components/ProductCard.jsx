@@ -24,7 +24,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>{product.name}</h3>
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '1rem' }}>Mã: {product.skuCode}</p>
         <p style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--accent-primary)', marginBottom: '1rem' }}>
-          ${product.price}
+          {product.price.toLocaleString('vi-VN')} VNĐ
         </p>
       </div>
       <button 

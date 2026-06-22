@@ -95,14 +95,14 @@ const CheckoutPage = () => {
                     <span style={{ fontWeight: '500' }}>{item.name}</span>
                     <span style={{ color: 'var(--text-secondary)', marginLeft: '0.5rem' }}>x {item.quantity}</span>
                   </div>
-                  <div style={{ fontWeight: '600' }}>${item.price * item.quantity}</div>
+                  <div style={{ fontWeight: '600' }}>{(item.price * item.quantity).toLocaleString('vi-VN')} VNĐ</div>
                 </div>
             ))}
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '1.5rem', marginBottom: '2rem' }}>
             <span style={{ fontSize: '1.25rem', fontWeight: '500' }}>Tổng thanh toán:</span>
-            <span style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--accent-primary)' }}>${getCartTotal()}</span>
+            <span style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--accent-primary)' }}>{getCartTotal().toLocaleString('vi-VN')} VNĐ</span>
           </div>
 
           <div style={{ display: 'flex', gap: '1rem' }}>
