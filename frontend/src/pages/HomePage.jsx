@@ -14,7 +14,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/product', {
+        const response = await axios.get('http://localhost:8080/api/products', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProducts(response.data);

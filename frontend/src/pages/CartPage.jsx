@@ -43,7 +43,7 @@ const CartPage = () => {
               </div>
               
               <div style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--accent-primary)', minWidth: '100px' }}>
-                ${item.price}
+                {item.price.toLocaleString('vi-VN')} VNĐ
               </div>
               
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--bg-secondary)', padding: '0.25rem', borderRadius: '0.5rem' }}>
@@ -62,10 +62,10 @@ const CartPage = () => {
                   <Plus size={16} />
                 </button>
               </div>
-              
-              <div style={{ fontSize: '1.25rem', fontWeight: '700', minWidth: '100px', textAlign: 'right' }}>
-                ${item.price * item.quantity}
-              </div>
+
+                <div style={{ fontSize: '1.25rem', fontWeight: '700', minWidth: '100px', textAlign: 'right' }}>
+                    {(item.price * item.quantity).toLocaleString('vi-VN')} VNĐ
+                </div>
               
               <button 
                 onClick={() => removeFromCart(item.skuCode)}
@@ -81,7 +81,7 @@ const CartPage = () => {
         <div className="glass" style={{ padding: '2rem', borderRadius: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', fontSize: '1.25rem' }}>
             <span style={{ color: 'var(--text-secondary)', fontWeight: '500' }}>Tổng cộng:</span>
-            <span style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--accent-primary)' }}>${getCartTotal()}</span>
+            <span style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--accent-primary)' }}>{getCartTotal().toLocaleString('vi-VN')} VNĐ</span>
           </div>
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
             <Link to="/" className="btn btn-outline">Tiếp tục mua sắm</Link>
