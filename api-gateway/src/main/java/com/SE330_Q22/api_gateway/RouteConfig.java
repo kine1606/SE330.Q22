@@ -29,7 +29,7 @@ public class RouteConfig {
                 .route("inventory-service", r -> r.path("/api/inventory/**")
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationGatewayFilterFactory.Config())))
                         .uri("http://localhost:8083"))
-                .route("inventory-service", r -> r.path("/api/payments/**")
+                .route("payment-service", r -> r.path("/api/payments/**")
                         .filters(f -> f.filter(authFilter.apply(new AuthenticationGatewayFilterFactory.Config())))
                         .uri("http://localhost:8085"))
                 .build();
