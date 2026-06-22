@@ -23,7 +23,7 @@ Hệ thống sử dụng nhiều database độc lập cho từng service. Tất
 ## 3. Khởi động các Microservices (Backend)
 Vì đây là hệ thống Microservices sử dụng API Gateway để định tuyến trực tiếp, bạn cần khởi động lần lượt các service nghiệp vụ, và cuối cùng là **API Gateway**.
 
-Bạn cần mở **5 tab Terminal riêng biệt** (hoặc dùng tính năng Split Terminal trong VSCode), cd vào từng thư mục và chạy lệnh Maven tương ứng:
+Bạn cần mở **6 tab Terminal riêng biệt** (hoặc dùng tính năng Split Terminal trong VSCode), cd vào từng thư mục và chạy lệnh Maven tương ứng:
 
 **Tab 1: Khởi động User Service**
 ```bash
@@ -49,7 +49,13 @@ cd order-service
 .\mvnw.cmd clean spring-boot:run
 ```
 
-**Tab 5: Khởi động API Gateway (Chạy SAU CÙNG)**
+**Tab 5: Khởi động Payment Service**
+```bash
+cd payment-service
+.\mvnw.cmd clean spring-boot:run
+```
+
+**Tab 6: Khởi động API Gateway (Chạy SAU CÙNG)**
 ```bash
 cd api-gateway
 .\mvnw.cmd clean spring-boot:run
@@ -59,7 +65,7 @@ cd api-gateway
 ## 4. Khởi động Giao diện Người dùng (Frontend)
 Frontend được viết bằng React và build bằng Vite. 
 
-1. Mở thêm một **Tab Terminal thứ 6**, đi tới thư mục `frontend`:
+1. Mở thêm một **Tab Terminal thứ 7**, đi tới thư mục `frontend`:
    ```bash
    cd frontend
    ```
