@@ -1,17 +1,17 @@
 version: "3.8"
 
 services:
-#  user-postgres:
-#    image: postgres:16
-#    container_name: user-postgres
-#    environment:
-#      POSTGRES_USER: user_service
-#      POSTGRES_PASSWORD: user_password
-#      POSTGRES_DB: user_service_db
-#    ports:
-#      - "5433:5432"
-#    volumes:
-#      - user_postgres_data:/var/lib/postgresql/data
+  user-postgres:
+    image: postgres:16
+    container_name: user-postgres
+    environment:
+      POSTGRES_USER: user_service
+      POSTGRES_PASSWORD: user_password
+      POSTGRES_DB: user_service_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - user_postgres_data:/var/lib/postgresql/data
 
   product-postgres:
     image: postgres:16
@@ -37,18 +37,6 @@ services:
     volumes:
       - order_postgres_data:/var/lib/postgresql/data
 
-  inventory-postgres:
-    image: postgres:16
-    container_name: inventory-postgres
-    environment:
-      POSTGRES_USER: inventory_service
-      POSTGRES_PASSWORD: inventory_password
-      POSTGRES_DB: inventory_service_db
-    ports:
-      - "5436:5432"
-    volumes:
-      - inventory_postgres_data:/var/lib/postgresql/data
-
   payment-postgres:
     image: postgres:16
     container_name: payment-postgres
@@ -57,16 +45,26 @@ services:
       POSTGRES_PASSWORD: payment_password
       POSTGRES_DB: payment_service_db
     ports:
-      - "5437:5432"
+      - "5436:5432"
     volumes:
       - payment_postgres_data:/var/lib/postgresql/data
-#
 
+  inventory-postgres:
+    image: postgres:16
+    container_name: inventory-postgres
+    environment:
+      POSTGRES_USER: inventory_service
+      POSTGRES_PASSWORD: inventory_password
+      POSTGRES_DB: inventory_service_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - inventory_postgres_data:/var/lib/postgresql/data
 
 volumes:
-#  user_postgres_data:
+  user_postgres_data:
   product_postgres_data:
   order_postgres_data:
-  inventory_postgres_data:
   payment_postgres_data:
+  inventory_postgres_data:
 

@@ -23,7 +23,8 @@ public class Order
 //    @Column(name = "order_number", nullable = false, unique = true)
     private String orderNumber;
 //    @Column(nullable = false)
-//    private Long userId;
+    @Column(nullable = false)
+    private Long userId;
 
     //    @Column(nullable = false)
     private String status;

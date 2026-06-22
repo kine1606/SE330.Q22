@@ -1,0 +1,69 @@
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+const RegisterPage = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:8080/api/user/register', formData);
+      setSuccess('Đăng ký thành công! Đang chuyển hướng...');
+      setTimeout(() => navigate('/login'), 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Đăng ký thất bại. Email có thể đã tồn tại.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex-center animate-fade-in" style={{ minHeight: '70vh' }}>
+      <div className="glass" style={{ width: '100%', maxWidth: '450px', padding: '2.5rem', borderRadius: '1rem' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: '700', marginBottom: '1.5rem', textAlign: 'center' }}>Tạo Tài Khoản Mới</h2>
+        {error && <div style={{ color: 'var(--error)', backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '0.75rem', borderRadius: '0.5rem', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
+        {success && <div style={{ color: 'var(--success)', backgroundColor: 'rgba(16, 185, 129, 0.1)', padding: '0.75rem', borderRadius: '0.5rem', marginBottom: '1rem', fontSize: '0.875rem' }}>{success}</div>}
+        
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', fontSize: '0.875rem' }}>Họ và Tên</label>
+            <input type="text" name="fullName" required value={formData.fullName} onChange={handleChange} placeholder="VD: Nguyễn Văn A" />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', fontSize: '0.875rem' }}>Email</label>
+            <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="Nhập email của bạn" />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', fontSize: '0.875rem' }}>Mật khẩu</label>
+            <input type="password" name="password" required value={formData.password} onChange={handleChange} placeholder="••••••••" />
+          </div>
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '0.5rem' }} disabled={loading}>
+            {loading ? 'Đang xử lý...' : 'Đăng Ký'}
+          </button>
+        </form>
+        <p style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+          Đã có tài khoản? <Link to="/login" style={{ fontWeight: '500' }}>Đăng nhập</Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default RegisterPage;

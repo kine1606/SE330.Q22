@@ -62,10 +62,14 @@ public class PaymentService
 
         Payment savedPayment = paymentRepository.save(payment);
 
-        if (success) {
+        if (success)
+        {
             orderClient.markOrderSuccess(order.getId());
-        } else {
+            log.info("Payment created successfully");
+        } else
+        {
             orderClient.markOrderFailed(order.getId());
+            log.info("Payment failed");
         }
 
         return paymentMapper.toResponse(savedPayment);

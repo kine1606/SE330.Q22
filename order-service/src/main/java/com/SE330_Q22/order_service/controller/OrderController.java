@@ -30,11 +30,20 @@ public class OrderController
         return orderService.getOrderById(id);
     }
 
+    @GetMapping("/user/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<OrderResponse> getOrdersByUserId(@PathVariable Long userId)
+    {
+        return orderService.getOrdersByUserId(userId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse createOrder(@RequestBody OrderRequest orderRequest)
+    public OrderResponse createOrder(@RequestBody OrderRequest orderRequest,
+                                     @RequestHeader(value = "X-Auth-User-Id", required = false) String userIdStr)
     {
-        return orderService.createOrder(orderRequest);
+        Long userId = (userIdStr != null) ? Long.valueOf(userIdStr) : null;
+        return orderService.createOrder(orderRequest, userId);
     }
 
     @PatchMapping("/{id}/order-failed")

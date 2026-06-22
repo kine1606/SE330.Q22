@@ -16,6 +16,6 @@ public class BankTransferPaymentProcessor implements PaymentProcessor
     @Override
     public boolean pay(Long orderId, BigDecimal amount)
     {
-        return false;
+        return true;
     }
 }
