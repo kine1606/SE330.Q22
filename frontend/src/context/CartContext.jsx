@@ -16,12 +16,23 @@ export const CartProvider = ({ children }) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.skuCode === product.skuCode);
       if (existingItem) {
+        const newQuantity = existingItem.quantity + quantity;
+        if (newQuantity > product.quantityAvailable) {
+          alert(`Chỉ có thể mua tối đa ${product.quantityAvailable} sản phẩm "${product.name}".`);
+          return prevItems; // Không cập nhật nếu vượt quá giới hạn
+        }
         return prevItems.map(item =>
           item.skuCode === product.skuCode
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: newQuantity }
             : item
         );
       }
+      
+      if (quantity > product.quantityAvailable) {
+        alert(`Chỉ có thể mua tối đa ${product.quantityAvailable} sản phẩm "${product.name}".`);
+        return prevItems;
+      }
+      
       return [...prevItems, { ...product, quantity }];
     });
   };
@@ -32,11 +43,17 @@ export const CartProvider = ({ children }) => {
 
   const updateQuantity = (skuCode, quantity) => {
     if (quantity < 1) return;
-    setCartItems(prevItems =>
-      prevItems.map(item =>
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item => item.skuCode === skuCode);
+      if (existingItem && existingItem.quantityAvailable !== undefined) {
+        if (quantity > existingItem.quantityAvailable) {
+          return prevItems; // Không cho phép tăng quá tồn kho
+        }
+      }
+      return prevItems.map(item =>
         item.skuCode === skuCode ? { ...item, quantity } : item
-      )
-    );
+      );
+    });
   };
 
   const clearCart = () => {

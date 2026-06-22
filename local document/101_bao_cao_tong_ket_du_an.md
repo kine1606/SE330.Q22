@@ -66,6 +66,19 @@ Thay vì sử dụng kiến trúc Monolithic (nguyên khối), Backend được 
   8. Phản hồi HTTP 201 trả về Frontend.
   9. Frontend nhận phản hồi, xóa sạch Giỏ hàng (Local Cart) và hiển thị màn hình `OrderSuccessPage`.
 
+### 2.6. Tích hợp Payment Service (MoMo) và Các Tùy chỉnh Nâng cao
+**Cơ sở nền tảng:** Một thành viên của team phát triển đã xây dựng thành công `payment-service` đóng vai trò liên kết với API MoMo Sandbox, bao gồm xử lý tạo chữ ký (Signature) bằng HMAC-SHA256, gọi tới cổng thanh toán và hứng kết quả trả về.
+**Các bổ sung và khắc phục lỗi quan trọng chúng ta đã làm:**
+- **Sửa lỗi Timezone PostgreSQL 16 trên Windows:** Khắc phục triệt để lỗi "The JVM timezone is Asia/Saigon... but PostgreSQL 16 does not support it" bằng cách chèn cờ `?options=-c%20timezone=Asia/Ho_Chi_Minh` vào chuỗi JDBC URL của toàn bộ 5 microservices.
+- **Tích hợp API MoMo vào luồng Frontend Checkout:** Tự động gọi API `/api/payments` của `payment-service` sau khi Order Service trả về `orderId`, lấy `payUrl` và tự động điều hướng người dùng quét mã.
+- **Bổ sung tính năng Thanh toán khi nhận hàng (COD):** Tạo thêm giao diện Modal/Radio box chọn phương thức ngay trước khi thanh toán, cung cấp một lối tắt (bypass) hoàn hảo để kiểm thử nhanh luồng thành công mà không phải lúc nào cũng cần mở ví MoMo.
+
+### 2.7. Cơ chế Kiểm soát Tồn kho (Inventory Validation) Toàn diện trên Frontend
+**Công việc:**
+- Tại Trang chủ (`HomePage`): Tích hợp gọi API `inventory-service` song song với `product-service` để lấy dữ liệu kho thực tế. Gắn trực tiếp trạng thái "Còn lại: X sản phẩm" hoặc đổi thành "Tạm hết hàng" (đồng thời mờ nút bấm) ngay trên mỗi Product Card.
+- Tại Context và Giỏ hàng (`CartContext`, `CartPage`): Thêm cơ chế chốt chặn (Validation), mờ nút `+` khi chạm trần tồn kho, ngăn chặn người dùng mua lố số lượng thực tế của kho và hiển thị cảnh báo.
+**Tác dụng:** Cải thiện triệt để logic nghiệp vụ E-commerce, ngăn chặn các case lỗi từ sớm (Fail-fast) ngay tại giao diện hiển thị, nâng tầm trải nghiệm UX/UI của dự án lên mức chuyên nghiệp.
+
 ---
 
 ## Phần 3. Tương quan giữa Các Thành phần (Component Correlation)

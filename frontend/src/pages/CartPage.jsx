@@ -38,10 +38,13 @@ const CartPage = () => {
                             }}
                         >
                             {/* Cột 1: Thông tin sản phẩm (Chiếm hết khoảng trống còn lại) */}
-                            <div style={{ flex: '1', minWidth: '200px' }}>
-                                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.25rem' }}>{item.name}</h3>
-                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Mã: {item.skuCode}</p>
-                            </div>
+                                <div style={{ flex: '1', minWidth: '200px' }}>
+                                    <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.25rem' }}>{item.name}</h3>
+                                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '0.25rem' }}>Mã: {item.skuCode}</p>
+                                    {item.quantityAvailable !== undefined && item.quantity >= item.quantityAvailable && (
+                                        <p style={{ color: 'var(--error)', fontSize: '0.75rem', fontWeight: '500' }}>Đã đạt giới hạn tồn kho ({item.quantityAvailable})</p>
+                                    )}
+                                </div>
 
                             {/* Cột 2: Giá bán lẻ (Cố định width và căn phải để thẳng hàng) */}
                             <div style={{
@@ -67,7 +70,17 @@ const CartPage = () => {
                                     <span style={{ width: '2rem', textAlign: 'center', fontWeight: '500' }}>{item.quantity}</span>
                                     <button
                                         onClick={() => updateQuantity(item.skuCode, item.quantity + 1)}
-                                        style={{ padding: '0.5rem', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                        style={{ 
+                                            padding: '0.5rem', 
+                                            border: 'none', 
+                                            background: 'transparent', 
+                                            cursor: (item.quantityAvailable !== undefined && item.quantity >= item.quantityAvailable) ? 'not-allowed' : 'pointer', 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            justifyContent: 'center',
+                                            opacity: (item.quantityAvailable !== undefined && item.quantity >= item.quantityAvailable) ? 0.3 : 1
+                                        }}
+                                        disabled={item.quantityAvailable !== undefined && item.quantity >= item.quantityAvailable}
                                     >
                                         <Plus size={16} />
                                     </button>

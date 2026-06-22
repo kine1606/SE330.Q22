@@ -63,6 +63,10 @@ Hệ thống tuân thủ nghiêm ngặt mô hình **Microservices**. Thay vì go
 - **Nhiệm vụ:** "Trái tim" của quy trình mua sắm.
 - **Cơ chế:** Nhận yêu cầu mua hàng từ Frontend. Nó sẽ làm 2 việc: Gọi sang Product Service bằng `ProductClient` để lấy đúng giá gốc, và gọi sang Inventory Service bằng `InventoryClient` để trừ số lượng. Sau đó lưu đơn hàng lại với trạng thái `PENDING`.
 
+### 3.6. Payment Service (`:8085`)
+- **Nhiệm vụ:** Quản lý giao dịch và tích hợp cổng thanh toán (Payment Gateway).
+- **Cơ chế:** Giao tiếp trực tiếp với các bên thứ 3 (ví dụ: MoMo). Nhận `orderId` từ Frontend, sử dụng thuật toán mã hóa (HMAC-SHA256) tạo chữ ký điện tử và gọi API của MoMo để lấy Link thanh toán (payUrl) trả về cho người dùng.
+
 ---
 
 ## 4. Phân tích Chi tiết Frontend (ReactJS)
@@ -122,8 +126,8 @@ Hệ thống dùng 5 database PostgreSQL. Cấu trúc các bảng quan trọng (
 3. Gửi lệnh `POST /api/order` kèm Header `Authorization: Bearer <Token>`.
 4. Gateway nhận Request. Filter bắt lại, thấy có Token -> Giải mã -> Lấy `userId` -> Chèn vào Header `X-Auth-User-Id` -> Chuyển xuống `order-service`.
 5. `order-service` tiếp nhận, quét mảng Items. Dùng FeignClient gọi qua Product và Inventory (như đã nói ở mục 3.5).
-6. Order lưu thành công. Trả về Frontend status HTTP 201.
-7. Frontend nhận tín hiệu -> Xóa sạch Local Cart -> Đẩy user sang trang Success.
+6. Order lưu thành công. Trả về Frontend `orderId`.
+7. Frontend hỏi người dùng phương thức thanh toán. Nếu là **COD** (Tiền mặt), chuyển ngay sang trang Success. Nếu là **MoMo**, Frontend gọi tiếp `POST /api/payments` xuống `payment-service` để lấy `payUrl` từ MoMo và chuyển hướng người dùng sang trang quét mã QR.
 
 ---
 
@@ -137,8 +141,8 @@ Toàn bộ dự án tuân theo tiêu chuẩn **Stateless Security**.
 
 ## 8. Định hướng Phát triển Tương lai
 Để đưa dự án SE330.Q22 đạt tầm cỡ "Production Ready", chúng ta có thể hướng tới:
-1. **Refresh Token Lifecycle:** Xây dựng cơ chế làm mới Access Token (như đã giải thích ở Báo cáo 101) để user không bị văng ra ngoài sau khi Token hết hạn.
-2. **Payment Service Integration:** Kết nối với các cổng thanh toán thật như VNPay, MoMo, Stripe để xử lý giao dịch.
+1. **Refresh Token Lifecycle:** Xây dựng cơ chế làm mới Access Token để user không bị văng ra ngoài sau khi Token hết hạn.
+2. **Mở rộng Payment Service:** Hiện tại đã tích hợp thành công **MoMo**, team có thể thiết kế thêm interface để cắm thêm các cổng VNPay, ZaloPay, Stripe một cách linh hoạt.
 3. **Message Broker (Kafka/RabbitMQ):** Thay vì để Order gọi Inventory qua FeignClient (Đồng bộ - Synchronous), có thể chuyển sang dùng Sự kiện (Asynchronous). Order cứ tạo trước, quăng 1 Event vào Kafka, Inventory nhặt Event và trừ dần kho.
 4. **Caching với Redis:** Đưa danh mục sản phẩm vào Redis để tối ưu tốc độ load trang chủ Frontend.
 

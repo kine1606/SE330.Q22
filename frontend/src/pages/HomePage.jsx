@@ -14,10 +14,26 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/products', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setProducts(response.data);
+        const [productsRes, inventoryRes] = await Promise.all([
+          axios.get('http://localhost:8080/api/products', {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          axios.get('http://localhost:8080/api/inventory', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ]);
+
+        const inventoryMap = inventoryRes.data.reduce((acc, item) => {
+          acc[item.skuCode] = item.quantityAvailable;
+          return acc;
+        }, {});
+
+        const productsWithStock = productsRes.data.map(p => ({
+          ...p,
+          quantityAvailable: inventoryMap[p.skuCode] || 0
+        }));
+
+        setProducts(productsWithStock);
       } catch (err) {
         setError('Không thể tải danh sách sản phẩm. Bạn vui lòng thử lại sau.');
         console.error(err);
