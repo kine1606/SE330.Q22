@@ -21,52 +21,45 @@ Hệ thống sử dụng nhiều database độc lập cho từng service. Tất
 3. *(Tùy chọn)* Kiểm tra xem 5 container (user, product, inventory, order, payment) đã chạy ổn định chưa thông qua Docker Desktop hoặc lệnh `docker ps`.
 
 ## 3. Khởi động các Microservices (Backend)
-Vì đây là hệ thống Microservices, bạn bắt buộc phải khởi động **Discovery Server** trước, sau đó là các service nghiệp vụ, và cuối cùng là **API Gateway**.
+Vì đây là hệ thống Microservices sử dụng API Gateway để định tuyến trực tiếp, bạn cần khởi động lần lượt các service nghiệp vụ, và cuối cùng là **API Gateway**.
 
-Bạn cần mở **6 tab Terminal riêng biệt** (hoặc dùng tính năng Split Terminal trong VSCode), cd vào từng thư mục và chạy lệnh Maven tương ứng:
+Bạn cần mở **5 tab Terminal riêng biệt** (hoặc dùng tính năng Split Terminal trong VSCode), cd vào từng thư mục và chạy lệnh Maven tương ứng:
 
-**Tab 1: Khởi động Discovery Server (Phải chạy ĐẦU TIÊN)**
-```bash
-cd discovery-server
-.\mvnw.cmd clean spring-boot:run
-```
-*(Chờ khoảng 10-15 giây cho đến khi terminal báo Started...)*
-
-**Tab 2: Khởi động User Service**
+**Tab 1: Khởi động User Service**
 ```bash
 cd user-service
 .\mvnw.cmd clean spring-boot:run
 ```
 
-**Tab 3: Khởi động Product Service**
+**Tab 2: Khởi động Product Service**
 ```bash
 cd product-service
 .\mvnw.cmd clean spring-boot:run
 ```
 
-**Tab 4: Khởi động Inventory Service**
+**Tab 3: Khởi động Inventory Service**
 ```bash
 cd inventory-service
 .\mvnw.cmd clean spring-boot:run
 ```
 
-**Tab 5: Khởi động Order Service**
+**Tab 4: Khởi động Order Service**
 ```bash
 cd order-service
 .\mvnw.cmd clean spring-boot:run
 ```
 
-**Tab 6: Khởi động API Gateway (Chạy SAU CÙNG)**
+**Tab 5: Khởi động API Gateway (Chạy SAU CÙNG)**
 ```bash
 cd api-gateway
 .\mvnw.cmd clean spring-boot:run
 ```
-*(Lưu ý: Đợi khoảng 1-2 phút để tất cả các service tự động đăng ký với Discovery Server. Bạn có thể kiểm tra trạng thái các service bằng cách truy cập `http://localhost:8761` trên trình duyệt).*
+*(Lưu ý: Bạn có thể bắt đầu test khi tất cả các dòng log đều báo "Started ...Application").*
 
 ## 4. Khởi động Giao diện Người dùng (Frontend)
 Frontend được viết bằng React và build bằng Vite. 
 
-1. Mở thêm một **Tab Terminal thứ 7**, đi tới thư mục `frontend`:
+1. Mở thêm một **Tab Terminal thứ 6**, đi tới thư mục `frontend`:
    ```bash
    cd frontend
    ```
