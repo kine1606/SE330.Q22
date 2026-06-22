@@ -1,5 +1,8 @@
-com\SE330_Q22\api_gateway\filter\AuthenticationFilter.class
+com\SE330_Q22\api_gateway\RouteConfig.class
+com\SE330_Q22\api_gateway\TestController.class
 com\SE330_Q22\api_gateway\filter\RouteValidator.class
 com\SE330_Q22\api_gateway\ApiGatewayApplication.class
+com\SE330_Q22\api_gateway\CorsConfig.class
+com\SE330_Q22\api_gateway\filter\AuthenticationGatewayFilterFactory.class
+com\SE330_Q22\api_gateway\filter\AuthenticationGatewayFilterFactory$Config.class
 com\SE330_Q22\api_gateway\filter\JwtUtil.class
-com\SE330_Q22\api_gateway\filter\AuthenticationFilter$Config.class
